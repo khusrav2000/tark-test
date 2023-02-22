@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Tark-test</string>
+    <string name="ticker_name">Ticker name</string>
+    <string name="ticker_description">Ticker description</string>
+    <string name="search">Search</string>
+    <string name="ticker_vol">Ticker vol</string>
+    <string name="ticker_price">Ticker price</string>
+    <string name="ticker_price_dollar">Ticker p dollar</string>
+    <string name="change_percent">+9,2%</string>
+    <string name="ticker_pair_one">BTC</string>
+    <string name="ticker_pair_two">/USDT</string>
+</resources>
