@@ -1,8 +1,11 @@
 package ashurzoda.khusrav.tark_test;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import ashurzoda.khusrav.tark_test.models.MiniTickerModel;
+import ashurzoda.khusrav.tark_test.models.StreamTickers;
+import ashurzoda.khusrav.tark_test.models.Ticker;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -12,20 +15,31 @@ import okio.ByteString;
 import com.google.gson.Gson;
 
 public final class BinanceWebSocketEcho extends WebSocketListener {
-    void run() {
+    void run(ArrayList<Ticker> tickers) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(0,  TimeUnit.MILLISECONDS)
                 .build();
 
-        Request request = new Request.Builder()
-                .url("wss://stream.binance.com:9443/ws/btcusdt@miniTicker")
-                .build();
+        StringBuilder streams = new StringBuilder();
 
-        Request request2 = new Request.Builder()
-                .url("wss://stream.binance.com:9443/ws/ethusdt@miniTicker")
+        for (Ticker ticker: tickers) {
+            streams.append(ticker.getSymbolOne().toLowerCase());
+            streams.append(ticker.getSymbolTwo().toLowerCase());
+            streams.append("@miniTicker");
+            streams.append("/");
+        }
+
+        if (streams.length() > 0) {
+            streams.deleteCharAt(streams.length() - 1);
+        }
+
+        Request request = new Request.Builder()
+                .url(String.format("%s%s",
+                        "wss://stream.binance.com:9443/stream?streams=",
+                        streams.toString()))
                 .build();
+        System.out.println(request.url());
         client.newWebSocket(request, this);
-        client.newWebSocket(request2, this);
         // Trigger shutdown of the dispatcher's executor so this process can exit cleanly.
         client.dispatcher().executorService().shutdown();
     }
@@ -40,9 +54,12 @@ public final class BinanceWebSocketEcho extends WebSocketListener {
     @Override public void onMessage(WebSocket webSocket, String text) {
         System.out.println("MESSAGE1: " + text);
         Gson gson = new Gson();
-        MiniTickerModel miniTickerModel = gson.fromJson(text, MiniTickerModel.class);
-        System.out.println(miniTickerModel);
-
+        try {
+            StreamTickers streamTickers = gson.fromJson(text, StreamTickers.class);
+            System.out.println(streamTickers.getData().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import ashurzoda.khusrav.tark_test.models.Ticker;
@@ -28,6 +30,7 @@ public class TickerAdapter extends RecyclerView.Adapter<TickerAdapter.ViewHolder
         // below line is to notify our adapter
         // as change in recycler view data.
         notifyDataSetChanged();
+
     }
 
     @NonNull
@@ -43,8 +46,11 @@ public class TickerAdapter extends RecyclerView.Adapter<TickerAdapter.ViewHolder
     public void onBindViewHolder(@NonNull TickerAdapter.ViewHolder holder, int position) {
         // setting data to our views of recycler view.
         Ticker ticker = tickers.get(position);
-        holder.tickerName.setText(ticker.getName());
-        holder.tickerDescription.setText(ticker.getDescription());
+        holder.tickerPairOne.setText(ticker.getSymbolOne());
+        holder.tickerPairTwo.setText(String.format("/%s", ticker.getSymbolTwo()));
+        holder.tickerVol.setText(ticker.getVolume());
+        holder.currentPrice.setText(ticker.getPrice());
+        holder.changePercent.setText(String.format("%s%s", ticker.getChangePercent(), "%"));
     }
 
     @Override
@@ -55,13 +61,20 @@ public class TickerAdapter extends RecyclerView.Adapter<TickerAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // creating variables for our views.
-        private final TextView tickerName;
-        private final TextView tickerDescription;
+        private final TextView tickerPairOne;
+        private final TextView tickerPairTwo;
+        private final TextView tickerVol;
+        private final TextView currentPrice;
+        private final TextView changePercent; // 24h change
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our views with their ids.
-            tickerName = itemView.findViewById(R.id.ticker_pair_one);
-            tickerDescription = itemView.findViewById(R.id.ticker_vol);
+            tickerPairOne = itemView.findViewById(R.id.ticker_pair_one);
+            tickerPairTwo = itemView.findViewById(R.id.ticker_pair_two);
+            tickerVol = itemView.findViewById(R.id.ticker_vol);
+            currentPrice = itemView.findViewById(R.id.ticker_price);
+            changePercent = itemView.findViewById(R.id.change_percent);
+
         }
     }
 

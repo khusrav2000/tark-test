@@ -67,7 +67,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/change_price"
+            android:id="@+id/change_percent"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/change_percent"

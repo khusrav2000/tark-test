@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
         tickersRV = findViewById(R.id.ticker_list);
 
-        BinanceWebSocketEcho binanceWebSocketEcho = new BinanceWebSocketEcho();
-        binanceWebSocketEcho.run();
-
         buildRecyclerView();
+
+        BinanceWebSocketEcho binanceWebSocketEcho = new BinanceWebSocketEcho();
+        binanceWebSocketEcho.run(tickerArrayList);
     }
 
     @Override
@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
         // running a for loop to compare elements.
         for (Ticker item : tickerArrayList) {
             // checking if the entered string matched with any item of our recycler view.
-            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getSymbolOne().toLowerCase().contains(text.toLowerCase())
+                    || item.getSymbolTwo().toLowerCase().contains(text.toLowerCase())) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);
@@ -101,11 +102,10 @@ public class MainActivity extends AppCompatActivity {
         tickerArrayList = new ArrayList<>();
 
         // below line is to add data to our array list.
-        tickerArrayList.add(new Ticker("DSA", "DSA Self Paced Course"));
-        tickerArrayList.add(new Ticker("JAVA", "JAVA Self Paced Course"));
-        tickerArrayList.add(new Ticker("C++", "C++ Self Paced Course"));
-        tickerArrayList.add(new Ticker("Python", "Python Self Paced Course"));
-        tickerArrayList.add(new Ticker("Fork CPP", "Fork CPP Self Paced Course"));
+        tickerArrayList.add(new Ticker("BTC", "USDT", "-","-","-"));
+        tickerArrayList.add(new Ticker("ETH", "USDT", "-","-","-"));
+        tickerArrayList.add(new Ticker("XRP", "USDT", "-","-","-"));
+        tickerArrayList.add(new Ticker("BNB", "USDT", "-","-","-"));
 
         // initializing our adapter class.
         tickerAdapter = new TickerAdapter(tickerArrayList, MainActivity.this);
