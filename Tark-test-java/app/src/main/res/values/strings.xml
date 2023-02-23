@@ -9,4 +9,5 @@
     <string name="change_percent">+9,2%</string>
     <string name="ticker_pair_one">BTC</string>
     <string name="ticker_pair_two">/USDT</string>
+    <string name="search_coin_pair">Search coin pairs</string>
 </resources>

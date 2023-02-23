@@ -3,7 +3,6 @@ package ashurzoda.khusrav.tark_test;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import ashurzoda.khusrav.tark_test.models.MiniTickerModel;
 import ashurzoda.khusrav.tark_test.models.StreamTickers;
 import ashurzoda.khusrav.tark_test.models.Ticker;
 import okhttp3.OkHttpClient;
@@ -15,6 +14,8 @@ import okio.ByteString;
 import com.google.gson.Gson;
 
 public final class BinanceWebSocketEcho extends WebSocketListener {
+
+    StreamCallbacks streamCallbacks;
     void run(ArrayList<Ticker> tickers) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(0,  TimeUnit.MILLISECONDS)
@@ -40,25 +41,30 @@ public final class BinanceWebSocketEcho extends WebSocketListener {
                 .build();
         System.out.println(request.url());
         client.newWebSocket(request, this);
-        // Trigger shutdown of the dispatcher's executor so this process can exit cleanly.
         client.dispatcher().executorService().shutdown();
     }
 
+    public BinanceWebSocketEcho(StreamCallbacks streamCallbacks) {
+        this.streamCallbacks = streamCallbacks;
+    }
+
     @Override public void onOpen(WebSocket webSocket, Response response) {
-        // webSocket.send("Hello...");
-        // webSocket.send("...World!");
-        // webSocket.send(ByteString.decodeHex("deadbeef"));
-        // webSocket.close(1000, "Goodbye, World!");
+
     }
 
     @Override public void onMessage(WebSocket webSocket, String text) {
         System.out.println("MESSAGE1: " + text);
         Gson gson = new Gson();
+        StreamTickers streamTickers = null;
         try {
-            StreamTickers streamTickers = gson.fromJson(text, StreamTickers.class);
+            streamTickers = gson.fromJson(text, StreamTickers.class);
             System.out.println(streamTickers.getData().toString());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (streamTickers != null) {
+            streamCallbacks.streamOnMessage(streamTickers.getData());
         }
 
     }

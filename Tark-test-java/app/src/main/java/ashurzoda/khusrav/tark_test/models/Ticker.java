@@ -5,9 +5,9 @@ public class Ticker {
     private String symbolTwo;
     private String price;
     private String volume;
-    private String changePercent;
+    private double changePercent;
 
-    public Ticker(String symbolOne, String symbolTwo, String price, String volume, String changePercent) {
+    public Ticker(String symbolOne, String symbolTwo, String price, String volume, double changePercent) {
         this.symbolOne = symbolOne;
         this.symbolTwo = symbolTwo;
         this.price = price;
@@ -47,11 +47,11 @@ public class Ticker {
         this.volume = volume;
     }
 
-    public String getChangePercent() {
+    public double getChangePercent() {
         return changePercent;
     }
 
-    public void setH24Change(String changePercent) {
+    public void setChangePercent(double changePercent) {
         this.changePercent = changePercent;
     }
 }
