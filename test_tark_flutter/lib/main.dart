@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (BuildContext context) => LiveTickersCubit())
         ],
-        child: const Home(),
+        child: const SafeArea(child: Home(),),
       )
     );
   }

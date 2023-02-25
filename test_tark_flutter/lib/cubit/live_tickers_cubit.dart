@@ -9,8 +9,7 @@ part 'live_tickers_state.dart';
 class LiveTickersCubit extends Cubit<LiveTickersState> {
 
   String streams = '';
-  WebSocketChannel _channel =
-  WebSocketChannel.connect(Uri.parse(wsUri));
+  WebSocketChannel? _channel;
 
   LiveTickersCubit() : super(LiveTickersInitial()) {
     streams = '';
@@ -25,7 +24,7 @@ class LiveTickersCubit extends Cubit<LiveTickersState> {
   }
 
   Stream getRealData() {
-    return _channel.stream;
+    return _channel!.stream;
   }
 
 }
