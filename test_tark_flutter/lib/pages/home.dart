@@ -179,7 +179,7 @@ class _HomeState extends State<Home> {
     var newValue = double.tryParse(volume);
     newValue ??= 0.0;
     newValue /= 1000000.0;
-    return '${format(newValue)} M';
+    return 'Vol ${format(newValue)} M';
   }
 
   String format(double n) {
